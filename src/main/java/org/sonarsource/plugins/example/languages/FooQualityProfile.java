@@ -20,8 +20,9 @@
 package org.sonarsource.plugins.example.languages;
 
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
+import org.sonarsource.plugins.example.rules.FooLanguageRulesDefinition;
 
-import static org.sonarsource.plugins.example.rules.FooLintRulesDefinition.REPO_KEY;
+import static org.sonarsource.plugins.example.rules.FooLanguageRulesDefinition.REPO_KEY;
 
 /**
  * Default, BuiltIn Quality Profile for the projects having files of the language "foo"
@@ -33,7 +34,7 @@ public final class FooQualityProfile implements BuiltInQualityProfilesDefinition
     NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("FooLint Rules", FooLanguage.KEY);
     profile.setDefault(true);
 
-    profile.activateRule(REPO_KEY, "ForbiddenKeyword");
+    profile.activateRule(REPO_KEY, FooLanguageRulesDefinition.FORBIDDEN_KEYWORD_RULE_KEY);
 
     profile.done();
   }

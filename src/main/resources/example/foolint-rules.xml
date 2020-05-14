@@ -9,7 +9,7 @@
 		<status>READY</status>
 		<type>CODE_SMELL</type>
 		<tag>example</tag>
-		<remediationFunction>LINEAR</remediationFunction>
+		<remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
 	</rule>
 </foolint-rules>

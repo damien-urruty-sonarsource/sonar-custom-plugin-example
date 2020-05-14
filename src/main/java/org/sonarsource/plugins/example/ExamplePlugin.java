@@ -22,7 +22,8 @@ package org.sonarsource.plugins.example;
 import org.sonar.api.Plugin;
 import org.sonarsource.plugins.example.languages.FooLanguage;
 import org.sonarsource.plugins.example.languages.FooQualityProfile;
-import org.sonarsource.plugins.example.rules.FooLintRulesDefinition;
+import org.sonarsource.plugins.example.rules.FooLanguageAnalysisSensor;
+import org.sonarsource.plugins.example.rules.FooLanguageRulesDefinition;
 import org.sonarsource.plugins.example.settings.FooLanguageProperties;
 
 /**
@@ -34,6 +35,7 @@ public class ExamplePlugin implements Plugin {
   public void define(Context context) {
     context.addExtensions(FooLanguage.class, FooQualityProfile.class);
     context.addExtensions(FooLanguageProperties.getProperties());
-    context.addExtension(FooLintRulesDefinition.class);
+    context.addExtension(FooLanguageRulesDefinition.class);
+    context.addExtension(FooLanguageAnalysisSensor.class);
   }
 }
