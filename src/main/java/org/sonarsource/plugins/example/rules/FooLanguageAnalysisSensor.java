@@ -12,6 +12,7 @@ import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.utils.log.Loggers;
 import org.sonarsource.plugins.example.languages.FooLanguage;
+import org.sonarsource.plugins.example.settings.FooLanguageProperties;
 
 public class FooLanguageAnalysisSensor implements Sensor {
 
@@ -34,7 +35,10 @@ public class FooLanguageAnalysisSensor implements Sensor {
 
     private void searchForbiddenKeywordsIn(InputFile file, SensorContext context) {
         try {
-            new ForbiddenKeywordsLocator("foo")
+            String forbiddenKeyword = context.config()
+                .get(FooLanguageProperties.FORBIDDEN_KEYWORD_KEY)
+                .orElse(FooLanguageProperties.DEFAULT_FORBIDDEN_KEYWORD);
+            new ForbiddenKeywordsLocator(forbiddenKeyword)
                 .locateAllIn(file)
                 .forEach(range -> raiseIssue(context, file, range));
         } catch (IOException e) {
