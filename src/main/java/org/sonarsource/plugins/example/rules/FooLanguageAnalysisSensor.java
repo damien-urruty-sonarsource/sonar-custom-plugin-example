@@ -18,9 +18,10 @@ public class FooLanguageAnalysisSensor implements Sensor {
 
     @Override
     public void describe(SensorDescriptor descriptor) {
-        descriptor.name("Add issues on forbidden keyword");
-        descriptor.onlyOnLanguage(FooLanguage.KEY);
-        descriptor.createIssuesForRuleRepositories(FooLanguageRulesDefinition.REPO_KEY);
+        descriptor
+            .name("Add issues on forbidden keyword")
+            .onlyOnLanguage(FooLanguage.KEY)
+            .createIssuesForRuleRepositories(FooLanguageRulesDefinition.REPO_KEY);
     }
 
     @Override
@@ -43,6 +44,7 @@ public class FooLanguageAnalysisSensor implements Sensor {
                 .forEach(range -> raiseIssue(context, file, range));
         } catch (IOException e) {
             Loggers.get(getClass()).error("Unable to analyze " + file.uri(), e);
+            throw new IllegalStateException(e);
         }
     }
 

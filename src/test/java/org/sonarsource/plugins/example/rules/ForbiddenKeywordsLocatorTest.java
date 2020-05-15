@@ -6,6 +6,9 @@ import static org.sonarsource.plugins.example.fixtures.InputFileFixtures.aFileWi
 import java.io.IOException;
 import java.util.List;
 
+import static org.assertj.core.groups.Tuple.tuple;
+
+import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.fs.TextRange;
@@ -28,60 +31,67 @@ public class ForbiddenKeywordsLocatorTest {
   public void it_should_locate_forbidden_keyword_if_file_contains_only_the_keyword() throws IOException {
     List<TextRange> occurrences = locator.locateAllIn(aFileWithContent("foo"));
 
-    assertThat(occurrences).hasSize(1);
-    TextRange actualRange = occurrences.get(0);
-    assertThat(actualRange.start().line()).isEqualTo(1);
-    assertThat(actualRange.start().lineOffset()).isEqualTo(0);
-    assertThat(actualRange.end().line()).isEqualTo(1);
-    assertThat(actualRange.end().lineOffset()).isEqualTo(3);
+    assertThat(occurrences)
+      .extracting(this::textRangeTuple)
+      .containsExactly(tuple(1, 0, 1, 3));
   }
 
   @Test
   public void it_should_locate_two_forbidden_keywords_separated_by_a_space() throws IOException {
     List<TextRange> occurrences = locator.locateAllIn(aFileWithContent("foo foo"));
 
-    assertThat(occurrences).hasSize(2);
-    TextRange actualRange = occurrences.get(1);
-    assertThat(actualRange.start().line()).isEqualTo(1);
-    assertThat(actualRange.start().lineOffset()).isEqualTo(4);
-    assertThat(actualRange.end().line()).isEqualTo(1);
-    assertThat(actualRange.end().lineOffset()).isEqualTo(7);
+    assertThat(occurrences)
+      .extracting(this::textRangeTuple)
+      .containsExactly(
+        tuple(1, 0, 1, 3),
+        tuple(1, 4, 1, 7)
+      );
   }
 
   @Test
   public void it_should_locate_three_forbidden_keywords_separated_by_spaces() throws IOException {
     List<TextRange> occurrences = locator.locateAllIn(aFileWithContent("foo  foo  foo"));
 
-    assertThat(occurrences).hasSize(3);
-    TextRange actualRange = occurrences.get(2);
-    assertThat(actualRange.start().line()).isEqualTo(1);
-    assertThat(actualRange.start().lineOffset()).isEqualTo(10);
-    assertThat(actualRange.end().line()).isEqualTo(1);
-    assertThat(actualRange.end().lineOffset()).isEqualTo(13);
+    assertThat(occurrences)
+      .extracting(this::textRangeTuple)
+      .containsExactly(
+        tuple(1, 0, 1, 3),
+        tuple(1, 5, 1, 8),
+        tuple(1, 10, 1, 13)
+      );
   }
 
   @Test
   public void it_should_locate_two_forbidden_keywords_separated_by_a_line_return() throws IOException {
     List<TextRange> occurrences = locator.locateAllIn(aFileWithContent("foo\nfoo"));
 
-    assertThat(occurrences).hasSize(2);
-    TextRange actualRange = occurrences.get(1);
-    assertThat(actualRange.start().line()).isEqualTo(2);
-    assertThat(actualRange.start().lineOffset()).isEqualTo(0);
-    assertThat(actualRange.end().line()).isEqualTo(2);
-    assertThat(actualRange.end().lineOffset()).isEqualTo(3);
+    assertThat(occurrences)
+      .extracting(this::textRangeTuple)
+      .containsExactly(
+        tuple(1, 0, 1, 3),
+        tuple(2, 0, 2, 3)
+      );
   }
 
   @Test
   public void it_should_locate_two_forbidden_keywords_separated_by_an_empty_line() throws IOException {
     List<TextRange> occurrences = locator.locateAllIn(aFileWithContent("foo\n\nfoo"));
 
-    assertThat(occurrences).hasSize(2);
-    TextRange actualRange = occurrences.get(1);
-    assertThat(actualRange.start().line()).isEqualTo(3);
-    assertThat(actualRange.start().lineOffset()).isEqualTo(0);
-    assertThat(actualRange.end().line()).isEqualTo(3);
-    assertThat(actualRange.end().lineOffset()).isEqualTo(3);
+    assertThat(occurrences)
+      .extracting(this::textRangeTuple)
+      .containsExactly(
+        tuple(1, 0, 1, 3),
+        tuple(3, 0, 3, 3)
+      );
+  }
+
+  private Tuple textRangeTuple(TextRange textRange) {
+    return tuple(
+      textRange.start().line(),
+      textRange.start().lineOffset(),
+      textRange.end().line(),
+      textRange.end().lineOffset()
+    );
   }
 
   private ForbiddenKeywordsLocator locator;
