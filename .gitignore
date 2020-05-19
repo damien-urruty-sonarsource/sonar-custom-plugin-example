@@ -5,6 +5,7 @@ target/
 node/
 .idea/
 sonar-example-plugin.iml
+/plugin-volume/
 
 # Eclipse
 .classpath

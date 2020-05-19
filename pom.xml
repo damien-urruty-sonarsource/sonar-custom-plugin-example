@@ -45,6 +45,12 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.16.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -55,6 +61,7 @@
         <version>1.18.0.372</version>
         <extensions>true</extensions>
         <configuration>
+          <sonarLintSupported>true</sonarLintSupported>
           <pluginKey>example</pluginKey>
           <pluginClass>org.sonarsource.plugins.example.ExamplePlugin</pluginClass>
         </configuration>

@@ -21,22 +21,26 @@ package org.sonarsource.plugins.example.rules;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
+import org.sonar.api.rule.RuleKey;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
 import org.sonarsource.plugins.example.languages.FooLanguage;
 
-public final class FooLintRulesDefinition implements RulesDefinition {
+public final class FooLanguageRulesDefinition implements RulesDefinition {
 
   private static final String PATH_TO_RULES_XML = "/example/foolint-rules.xml";
 
-  protected static final String KEY = "foolint";
-  protected static final String NAME = "FooLint";
+  public static final String FORBIDDEN_KEYWORD_RULE_KEY = "ForbiddenKeyword";
 
-  public static final String REPO_KEY = FooLanguage.KEY + "-" + KEY;
-  protected static final String REPO_NAME = FooLanguage.KEY + "-" + NAME;
+  public static final String REPO_KEY = FooLanguage.KEY;
+  protected static final String REPO_NAME = FooLanguage.KEY;
 
-  protected String rulesDefinitionFilePath() {
-    return PATH_TO_RULES_XML;
+  public static final RuleKey RULE_FORBIDDEN_KEYWORD = RuleKey.of(REPO_KEY, FORBIDDEN_KEYWORD_RULE_KEY);
+
+  @Override
+  public void define(Context context) {
+    defineRulesForLanguage(context, REPO_KEY, REPO_NAME, FooLanguage.KEY);
   }
 
   private void defineRulesForLanguage(Context context, String repositoryKey, String repositoryName, String languageKey) {
@@ -51,9 +55,8 @@ public final class FooLintRulesDefinition implements RulesDefinition {
     repository.done();
   }
 
-  @Override
-  public void define(Context context) {
-    defineRulesForLanguage(context, REPO_KEY, REPO_NAME, FooLanguage.KEY);
+  protected String rulesDefinitionFilePath() {
+    return PATH_TO_RULES_XML;
   }
 
 }

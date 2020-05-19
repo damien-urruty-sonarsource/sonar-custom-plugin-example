@@ -1,0 +1,8 @@
+version: '2.0'
+services:
+  sonarqube:
+    image: sonarqube:8.3.1-community
+    ports:
+    - "9000:9000"
+    volumes:
+    - ./plugin-volume:/opt/sonarqube/extensions/plugins
