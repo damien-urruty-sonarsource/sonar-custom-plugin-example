@@ -61,6 +61,7 @@
         <version>1.18.0.372</version>
         <extensions>true</extensions>
         <configuration>
+          <sonarLintSupported>true</sonarLintSupported>
           <pluginKey>example</pluginKey>
           <pluginClass>org.sonarsource.plugins.example.ExamplePlugin</pluginClass>
         </configuration>
